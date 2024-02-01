@@ -5,18 +5,22 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import lombok.Data;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "customer")
 @Builder
+@Data
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Long customerId;
 
     @NotBlank
     private String username;
@@ -48,12 +52,32 @@ public class Customer {
     private LocalDate joinedDate;
     private String securityQuestion;
 
-    public Long getId() {
-        return id;
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Account> accounts = new HashSet<>();
+
+    public Customer(Long customerId, String username, String full_name, String password, String email, String phoneNumber, String address, LocalDate dateOfBirth, String nationalId, String accountStatus, LocalDateTime lastLogin, LocalDate joinedDate, String securityQuestion, Set<Account> accounts) {
+        this.customerId = customerId;
+        this.username = username;
+        this.full_name = full_name;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.dateOfBirth = dateOfBirth;
+        this.nationalId = nationalId;
+        this.accountStatus = accountStatus;
+        this.lastLogin = lastLogin;
+        this.joinedDate = joinedDate;
+        this.securityQuestion = securityQuestion;
+        this.accounts = accounts;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     public String getUsername() {
@@ -152,42 +176,12 @@ public class Customer {
         this.securityQuestion = securityQuestion;
     }
 
-    public Customer(Long id, String username, String full_name, String password, String email, String phoneNumber, String address, LocalDate dateOfBirth, String nationalId, String accountStatus, LocalDateTime lastLogin, LocalDate joinedDate, String securityQuestion) {
-        this.id = id;
-        this.username = username;
-        this.full_name = full_name;
-        this.password = password;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.dateOfBirth = dateOfBirth;
-        this.nationalId = nationalId;
-        this.accountStatus = accountStatus;
-        this.lastLogin = lastLogin;
-        this.joinedDate = joinedDate;
-        this.securityQuestion = securityQuestion;
+    public Set<Account> getAccounts() {
+        return accounts;
     }
 
-    public Customer() {
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", full_name='" + full_name + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", nationalId='" + nationalId + '\'' +
-                ", accountStatus='" + accountStatus + '\'' +
-                ", lastLogin=" + lastLogin +
-                ", joinedDate=" + joinedDate +
-                ", securityQuestion='" + securityQuestion + '\'' +
-                '}';
+    public void setAccounts(Set<Account> accounts) {
+        this.accounts = accounts;
     }
 
     @Override
@@ -195,11 +189,14 @@ public class Customer {
         if (this == o) return true;
         if (!(o instanceof Customer)) return false;
         Customer customer = (Customer) o;
-        return id.equals(customer.id) && username.equals(customer.username) && full_name.equals(customer.full_name) && password.equals(customer.password) && email.equals(customer.email) && phoneNumber.equals(customer.phoneNumber) && address.equals(customer.address) && dateOfBirth.equals(customer.dateOfBirth) && nationalId.equals(customer.nationalId) && accountStatus.equals(customer.accountStatus) && lastLogin.equals(customer.lastLogin) && joinedDate.equals(customer.joinedDate) && securityQuestion.equals(customer.securityQuestion);
+        return customerId.equals(customer.customerId) && username.equals(customer.username) && full_name.equals(customer.full_name) && password.equals(customer.password) && email.equals(customer.email) && phoneNumber.equals(customer.phoneNumber) && address.equals(customer.address) && dateOfBirth.equals(customer.dateOfBirth) && nationalId.equals(customer.nationalId) && accountStatus.equals(customer.accountStatus) && lastLogin.equals(customer.lastLogin) && joinedDate.equals(customer.joinedDate) && securityQuestion.equals(customer.securityQuestion) && accounts.equals(customer.accounts);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, full_name, password, email, phoneNumber, address, dateOfBirth, nationalId, accountStatus, lastLogin, joinedDate, securityQuestion);
+        return Objects.hash(customerId, username, full_name, password, email, phoneNumber, address, dateOfBirth, nationalId, accountStatus, lastLogin, joinedDate, securityQuestion, accounts);
+    }
+
+    public Customer() {
     }
 }
