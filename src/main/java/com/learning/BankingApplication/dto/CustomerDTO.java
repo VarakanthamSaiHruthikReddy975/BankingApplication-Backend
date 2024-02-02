@@ -24,6 +24,9 @@ public class CustomerDTO {
     private String full_name;
 
     @NotBlank
+    private String password;
+
+    @NotBlank
     @Email
     private String email;
 
@@ -40,9 +43,10 @@ public class CustomerDTO {
     @NotBlank
     private String nationalId;
 
-    public CustomerDTO(String username, String full_name, String email, String phoneNumber, String address, LocalDate dateOfBirth, String nationalId) {
+    public CustomerDTO(String username, String full_name, String password, String email, String phoneNumber, String address, LocalDate dateOfBirth, String nationalId) {
         this.username = username;
         this.full_name = full_name;
+        this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.address = address;
@@ -64,6 +68,14 @@ public class CustomerDTO {
 
     public void setFull_name(String full_name) {
         this.full_name = full_name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -106,32 +118,19 @@ public class CustomerDTO {
         this.nationalId = nationalId;
     }
 
-    public CustomerDTO() {
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof CustomerDTO)) return false;
         CustomerDTO that = (CustomerDTO) o;
-        return username.equals(that.username) && full_name.equals(that.full_name) && email.equals(that.email) && phoneNumber.equals(that.phoneNumber) && address.equals(that.address) && dateOfBirth.equals(that.dateOfBirth) && nationalId.equals(that.nationalId);
+        return username.equals(that.username) && full_name.equals(that.full_name) && password.equals(that.password) && email.equals(that.email) && phoneNumber.equals(that.phoneNumber) && address.equals(that.address) && dateOfBirth.equals(that.dateOfBirth) && nationalId.equals(that.nationalId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, full_name, email, phoneNumber, address, dateOfBirth, nationalId);
+        return Objects.hash(username, full_name, password, email, phoneNumber, address, dateOfBirth, nationalId);
     }
 
-    @Override
-    public String toString() {
-        return "CustomerDTO{" +
-                "username='" + username + '\'' +
-                ", full_name='" + full_name + '\'' +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", address='" + address + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", nationalId='" + nationalId + '\'' +
-                '}';
+    public CustomerDTO() {
     }
 }
