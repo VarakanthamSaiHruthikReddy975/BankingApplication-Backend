@@ -35,6 +35,12 @@ public class Role implements GrantedAuthority {
         this.roleId = roleId;
         this.authority = authority;
     }
+    public Role(Integer roleId) {
+        this.roleId = roleId;
+    }
+    public Role(String authority) {
+        this.authority = authority;
+    }
 
     public Role() {
     }
