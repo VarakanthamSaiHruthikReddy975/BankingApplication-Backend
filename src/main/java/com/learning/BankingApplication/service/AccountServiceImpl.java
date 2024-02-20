@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,6 +19,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
     private CustomerRepository customerRepository;
 
+    //End point for creating an account for user
     public Account createAccount(Long customerId, Account account) {
         Optional<Customer> customerOptional = customerRepository.findById(customerId);
         if (customerOptional.isPresent()) {
@@ -34,4 +36,9 @@ public class AccountServiceImpl implements AccountService {
         }
     }
 
+    //End point for getting all accounts opened by the customer
+    public List<Account> viewAllAccOpenedCustomer(Long customerId){
+        List<Account> accounts = accountRepository.findByCustomerId(customerId);
+        return accounts;
+    }
 }

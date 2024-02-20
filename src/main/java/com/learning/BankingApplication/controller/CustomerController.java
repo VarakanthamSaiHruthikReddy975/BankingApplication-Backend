@@ -5,11 +5,13 @@ import com.learning.BankingApplication.entity.Account;
 import com.learning.BankingApplication.entity.Customer;
 import com.learning.BankingApplication.serviceInterfaces.AccountService;
 import com.learning.BankingApplication.serviceInterfaces.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/customer")
@@ -37,5 +39,17 @@ public class CustomerController {
             return ResponseEntity.status(403).body(null); // Simplified error handling
         }
     }
+
+    @GetMapping("/accounts/customer/{customerId}")
+    public ResponseEntity<List<Account>> getAllAccountsByCustomerId(@PathVariable Long customerId) {
+        List<Account> accounts = accountService.viewAllAccOpenedCustomer(customerId);
+        if (accounts.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
+
+
+
 
 }
