@@ -49,6 +49,12 @@ public class CustomerController {
         return new ResponseEntity<>(accounts, HttpStatus.OK);
     }
 
+    @GetMapping("/{customerId}")
+    public ResponseEntity<List<Customer>> getAllCustomersById(Long customerId){
+        List<Customer> customer = customerService.returningCustomerById(customerId);
+        return ResponseEntity.ok(customer);
+    }
+
 
 
 

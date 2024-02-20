@@ -7,6 +7,8 @@ import com.learning.BankingApplication.serviceInterfaces.CustomerService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
@@ -20,6 +22,13 @@ public class CustomerServiceImpl implements CustomerService {
                 .password(customerDTO.getPassword())
                 .build();
         return customerRepository.save(customer);
+    }
+
+    @Override
+    public List<Customer> returningCustomerById(Long customerId) {
+
+        List<Customer> customer = customerRepository.findAll();
+        return customer;
     }
 
 }
