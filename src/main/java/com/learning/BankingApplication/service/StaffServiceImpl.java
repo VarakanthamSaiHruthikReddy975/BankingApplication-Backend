@@ -14,15 +14,15 @@ public class StaffServiceImpl implements StaffService {
     private final AccountRepository accountRepository;
 
     //Method for approving the account which is created by the customer
-    public Account approveAccount(Long accountNumber) throws Exception {
-        Optional<Account> approvalAccount = accountRepository.findById(accountNumber);
-        if(approvalAccount.isPresent()){
-            Account account = approvalAccount.get();
+    public boolean approveAccount(Long customerId, Long accountNo) {
+        Optional<Account> accountOptional = accountRepository.findByIdAndCustomerId(accountNo, customerId);
+        if (accountOptional.isPresent()) {
+            Account account = accountOptional.get();
             account.setApproved("yes");
-            return accountRepository.save(account);
+            accountRepository.save(account);
+            return true;
         }
-        else{
-            throw new Exception("Account not found with account number "+accountNumber);
-        }
+        return false;
     }
+
 }

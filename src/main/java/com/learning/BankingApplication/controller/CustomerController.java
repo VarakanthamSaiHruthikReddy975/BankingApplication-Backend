@@ -54,8 +54,4 @@ public class CustomerController {
         List<Customer> customer = customerService.returningCustomerById(customerId);
         return ResponseEntity.ok(customer);
     }
-
-
-
-
 }
