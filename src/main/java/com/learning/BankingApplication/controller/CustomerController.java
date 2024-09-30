@@ -3,6 +3,7 @@ package com.learning.BankingApplication.controller;
 import com.learning.BankingApplication.dto.CustomerDTO;
 import com.learning.BankingApplication.entity.Account;
 import com.learning.BankingApplication.entity.Customer;
+import com.learning.BankingApplication.repository.CustomerRepository;
 import com.learning.BankingApplication.serviceInterfaces.AccountService;
 import com.learning.BankingApplication.serviceInterfaces.CustomerService;
 import org.springframework.http.HttpStatus;
@@ -12,19 +13,21 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/customer")
 public class CustomerController {
     private CustomerService customerService;
     private AccountService accountService;
+    private CustomerRepository customerRepository;
 
     @PostMapping("/register")
     public ResponseEntity<?> registerCustomer(@RequestBody CustomerDTO customerDTO){
-        Customer customer = customerService.registerCustomer(customerDTO);
+        Optional<Customer> customer = customerService.registerCustomer(customerDTO);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(customer.getCustomerId())
+                .buildAndExpand(customerRepository.getCustomerId(customer))
                 .toUri();
         return ResponseEntity.created(location).body(customer);
     }
@@ -50,8 +53,20 @@ public class CustomerController {
     }
 
     @GetMapping("/{customerId}")
-    public ResponseEntity<List<Customer>> getAllCustomersById(Long customerId){
-        List<Customer> customer = customerService.returningCustomerById(customerId);
+    public ResponseEntity<Optional<List<Customer>>> getAllCustomersById(Long customerId){
+        Optional<List<Customer>> customer = customerService.returningCustomerById(customerId);
         return ResponseEntity.ok(customer);
     }
+
+    // Should update the user customer in the payload which shall match the username and updated the existing customer with the new details.
+    @PutMapping("/{customerId}")
+    public ResponseEntity<Optional<Customer>> updateCustomer(@PathVariable Long customerId, @RequestBody CustomerDTO customerDTO) {
+        Optional<Customer> updatedCustomer = customerService.updateCustomerbyCustomerId(customerId, customerDTO);
+        return ResponseEntity.ok(updatedCustomer);
+    }
+
+    // Should get the customer account with the specified account number :accountID
+    //When Valid :
+
+    
 }
